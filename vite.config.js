@@ -20,13 +20,17 @@ import injectHTML from 'vite-plugin-html-inject';
 
 import wbn from 'rollup-plugin-webbundle';
 import * as wbnSign from 'wbn-sign';
+
 import dotenv from 'dotenv';
 
 dotenv.config();
 
 const plugins = [injectHTML()];
 
-if (process.env.NODE_ENV === 'production') {
+console.log(process.env);
+
+if (!process.env.FIREBASE_DEPLOY_AGENT
+  && process.env.NODE_ENV === 'production') {
   // Get the key and decrypt it to sign the web bundle
   const key = wbnSign.parsePemKey(
     process.env.KEY || fs.readFileSync('./certs/encrypted_key.pem'),
